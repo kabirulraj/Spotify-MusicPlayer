@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { 
-  Box, 
+import {
+  Box,
   Container,
   IconButton,
   Typography,
@@ -29,7 +29,7 @@ const MusicPlayer = () => {
   const audioRef = useRef(null);
 
   const handleFileUpload = (files) => {
-    const audioFiles = Array.from(files).filter(file => 
+    const audioFiles = Array.from(files).filter(file =>
       file.type.startsWith('audio/')
     );
 
@@ -72,7 +72,7 @@ const MusicPlayer = () => {
   };
 
   const handleSongNameUpdate = (songId, newName) => {
-    setSongs(songs.map(song => 
+    setSongs(songs.map(song =>
       song.id === songId ? { ...song, name: newName } : song
     ));
   };
@@ -80,26 +80,29 @@ const MusicPlayer = () => {
   return (
     <Container>
       <Box
-  onDrop={handleDrop}
-  onDragOver={handleDragOver}
-  sx={{
-    border: '2px dashed #ccc',
-    padding: 4,
-    textAlign: 'center',
-    marginY: 2,
-    cursor: 'pointer'
-  }}
->
-  <input
-    type="file"
-    accept="audio/*"
-    multiple
-    onChange={(e) => handleFileUpload(e.target.files)}
-    style={{ marginTop: 16, display: 'none' }}
-  />
-  <CloudUploadIcon sx={{ fontSize: 48, color: 'primary.main' }} />
-  <Typography>Drag and drop audio files here</Typography>
-</Box>
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        sx={{
+          border: '2px dashed #ccc',
+          padding: 4,
+          textAlign: 'center',
+          marginY: 2,
+          cursor: 'pointer'
+        }}
+        onClick={() => document.getElementById('file-upload').click()}
+      >
+        <input
+          id="file-upload"
+          type="file"
+          accept="audio/*"
+          multiple
+          onChange={(e) => handleFileUpload(e.target.files)}
+          style={{ display: 'none' }}
+        />
+        <CloudUploadIcon sx={{ fontSize: 48, color: 'primary.main' }} />
+        <Typography>Click or drag and drop audio files here</Typography>
+      </Box>
+
 
       <Button
         onClick={() => setViewMode(viewMode === 'list' ? 'grid' : 'list')}
@@ -109,7 +112,7 @@ const MusicPlayer = () => {
       </Button>
 
       {viewMode === 'list' ? (
-        <SongListView 
+        <SongListView
           songs={songs}
           currentSong={currentSong}
           playSong={playSong}
@@ -145,9 +148,17 @@ const MusicPlayer = () => {
                 <IconButton onClick={playPrevious}>
                   <SkipPrevious />
                 </IconButton>
-                <IconButton onClick={() => setIsPlaying(!isPlaying)}>
+                <IconButton onClick={() => {
+                  if (isPlaying) {
+                    audioRef.current.pause();
+                  } else {
+                    audioRef.current.play();
+                  }
+                  setIsPlaying(!isPlaying);
+                }}>
                   {isPlaying ? <Pause /> : <PlayArrow />}
                 </IconButton>
+
                 <IconButton onClick={playNext}>
                   <SkipNext />
                 </IconButton>

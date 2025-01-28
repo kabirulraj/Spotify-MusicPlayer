@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { PlayArrow, MusicNote } from '@mui/icons-material';
 
-const SongGridView = ({ songs, currentSong, playSong }) => {
+const SongGridView = ({ songs,isPlaying, currentSong, playSong }) => {
   return (
     <Grid container spacing={2}>
       {songs.map((song) => (
@@ -51,7 +51,12 @@ const SongGridView = ({ songs, currentSong, playSong }) => {
             }
           }}
         >
-          <PlayArrow sx={{ color: currentSong?.id === song.id ? 'white' : 'primary.main' }} />
+          <PlayArrow sx={{ 
+  color: currentSong?.id === song.id 
+    ? isPlaying ? 'white' : 'primary.main'
+    : 'primary.main' 
+}} />
+
         </IconButton>
       </Grid>
     </Grid>
