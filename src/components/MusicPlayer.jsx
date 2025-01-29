@@ -77,6 +77,11 @@ const MusicPlayer = () => {
     ));
   };
 
+  const handlePause = () => {
+    audioRef.current.pause();
+    setIsPlaying(false);
+  };
+
   return (
     <Container>
       <Box
@@ -113,16 +118,21 @@ const MusicPlayer = () => {
 
       {viewMode === 'list' ? (
         <SongListView
-          songs={songs}
-          currentSong={currentSong}
-          playSong={playSong}
-          onSongNameUpdate={handleSongNameUpdate}
-        />
+        songs={songs}
+        currentSong={currentSong}
+        playSong={playSong}
+        onSongNameUpdate={handleSongNameUpdate}
+        isPlaying={isPlaying}
+        onPause={handlePause}
+      />
+      
       ) : (
         <SongGridView
           songs={songs}
           currentSong={currentSong}
           playSong={playSong}
+          isPlaying={isPlaying}
+        onPause={handlePause}
         />
       )}
 

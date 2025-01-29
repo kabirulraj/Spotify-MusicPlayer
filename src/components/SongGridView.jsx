@@ -6,9 +6,18 @@ import {
   Typography,
   IconButton
 } from '@mui/material';
-import { PlayArrow, MusicNote } from '@mui/icons-material';
+import { PlayArrow, MusicNote, Pause } from '@mui/icons-material';
 
-const SongGridView = ({ songs,isPlaying, currentSong, playSong }) => {
+const SongGridView = ({ songs,isPlaying, currentSong, playSong, onPause }) => {
+
+  const handlePlayPause = (song) => {
+    if (currentSong?.id === song.id && isPlaying) {
+      onPause();
+    } else {
+      playSong(song);
+    };
+  };
+
   return (
     <Grid container spacing={2}>
       {songs.map((song) => (
@@ -44,18 +53,23 @@ const SongGridView = ({ songs,isPlaying, currentSong, playSong }) => {
       </Grid>
       <Grid item>
         <IconButton 
-          onClick={() => playSong(song)}
+          onClick={() => handlePlayPause(song)}
           sx={{
             '&:hover': {
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
             }
           }}
         >
-          <PlayArrow sx={{ 
+          {/* <PlayArrow sx={{ 
   color: currentSong?.id === song.id 
     ? isPlaying ? 'white' : 'primary.main'
     : 'primary.main' 
-}} />
+}} /> */}
+        {currentSong?.id === song.id && isPlaying ? (
+                            <Pause color="primary" />
+                          ) : (
+                            <PlayArrow color="primary" />
+                          )}
 
         </IconButton>
       </Grid>
