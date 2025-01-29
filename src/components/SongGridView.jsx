@@ -11,11 +11,17 @@ import { PlayArrow, MusicNote, Pause } from '@mui/icons-material';
 const SongGridView = ({ songs,isPlaying, currentSong, playSong, onPause }) => {
 
   const handlePlayPause = (song) => {
-    if (currentSong?.id === song.id && isPlaying) {
-      onPause();
+    if (!song) return;
+    
+    if (currentSong?.id === song.id) {
+      if (isPlaying) {
+        onPause();
+      } else {
+        playSong(song);
+      }
     } else {
       playSong(song);
-    };
+    }
   };
 
   return (

@@ -28,11 +28,17 @@ const SongListView = ({ songs, currentSong, playSong, onSongNameUpdate, isPlayin
   };
 
   const handlePlayPause = (song) => {
-    if (currentSong?.id === song.id && isPlaying) {
-      onPause();
+    if (!song) return;
+    
+    if (currentSong?.id === song.id) {
+      if (isPlaying) {
+        onPause();
+      } else {
+        playSong(song);
+      }
     } else {
       playSong(song);
-    };
+    }
   };
 
   return (

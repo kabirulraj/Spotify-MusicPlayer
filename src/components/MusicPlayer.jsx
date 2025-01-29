@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -27,6 +27,15 @@ const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [viewMode, setViewMode] = useState('list');
   const audioRef = useRef(null);
+  const [audio] = useState(new Audio());
+
+
+  useEffect(() => {
+    return () => {
+      audio.pause();
+      audio.currentTime = 0;
+    };
+  }, []);
 
   const handleFileUpload = (files) => {
     const audioFiles = Array.from(files).filter(file =>
@@ -53,10 +62,20 @@ const MusicPlayer = () => {
   };
 
   const playSong = (song) => {
-    setCurrentSong(song);
-    setIsPlaying(true);
-    audioRef.current.src = song.url;
-    audioRef.current.play();
+    if (!song?.url) return;
+
+    if (currentSong?.id !== song.id) {
+      audio.src = song.url;
+      setCurrentSong(song);
+    }
+
+    audio.play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch((error) => {
+        console.error('Playback failed:', error);
+      });
   };
 
   const playNext = () => {
@@ -78,7 +97,7 @@ const MusicPlayer = () => {
   };
 
   const handlePause = () => {
-    audioRef.current.pause();
+    audio.pause();
     setIsPlaying(false);
   };
 
