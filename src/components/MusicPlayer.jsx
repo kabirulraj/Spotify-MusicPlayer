@@ -137,21 +137,21 @@ const MusicPlayer = () => {
 
       {viewMode === 'list' ? (
         <SongListView
-        songs={songs}
-        currentSong={currentSong}
-        playSong={playSong}
-        onSongNameUpdate={handleSongNameUpdate}
-        isPlaying={isPlaying}
-        onPause={handlePause}
-      />
-      
+          songs={songs}
+          currentSong={currentSong}
+          playSong={playSong}
+          onSongNameUpdate={handleSongNameUpdate}
+          isPlaying={isPlaying}
+          onPause={handlePause}
+        />
+
       ) : (
         <SongGridView
           songs={songs}
           currentSong={currentSong}
           playSong={playSong}
           isPlaying={isPlaying}
-        onPause={handlePause}
+          onPause={handlePause}
         />
       )}
 
@@ -179,11 +179,10 @@ const MusicPlayer = () => {
                 </IconButton>
                 <IconButton onClick={() => {
                   if (isPlaying) {
-                    audioRef.current.pause();
+                    handlePause();
                   } else {
-                    audioRef.current.play();
+                    playSong(currentSong);
                   }
-                  setIsPlaying(!isPlaying);
                 }}>
                   {isPlaying ? <Pause /> : <PlayArrow />}
                 </IconButton>
@@ -194,12 +193,6 @@ const MusicPlayer = () => {
               </Box>
             </Grid>
           </Grid>
-          <audio
-            ref={audioRef}
-            onEnded={playNext}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-          />
         </Paper>
       )}
     </Container>
